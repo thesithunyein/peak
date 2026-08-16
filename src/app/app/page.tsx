@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { Draft, Report } from "@/lib/types";
-import { Nav } from "@/components/ui";
+import { Nav, PeakBackground, SideRail } from "@/components/ui";
 import { UploadStep } from "@/components/upload";
 import { ReportStep } from "@/components/report";
 import { GenerateStep } from "@/components/generate";
@@ -39,7 +39,6 @@ export default function AppPage() {
   }
 
   useEffect(() => {
-    // Landing page "Load sample data" deep link.
     if (!window.location.search.includes("sample=1")) return;
     (async () => {
       setLoading(true);
@@ -63,32 +62,23 @@ export default function AppPage() {
   }, []);
 
   return (
-    <div className="flex min-h-full flex-1 flex-col">
+    <div className="relative min-h-screen overflow-hidden text-ink">
+      <PeakBackground />
       <Nav />
-      <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-10">
-        {step === "import" && (
-          <UploadStep onCsv={analyze} loading={loading} error={error} />
-        )}
-        {step === "report" && report && (
-          <ReportStep
-            report={report}
-            onGenerate={() => setStep("generate")}
-            onBack={() => setStep("import")}
-          />
-        )}
-        {step === "generate" && report && (
-          <GenerateStep
-            report={report}
-            onDone={(d) => {
-              setDrafts(d);
-              setStep("publish");
-            }}
-            onBack={() => setStep("report")}
-          />
-        )}
-        {step === "publish" && (
-          <PublishStep drafts={drafts} onBack={() => setStep("generate")} />
-        )}
+      <main className="relative z-10 mx-auto flex w-full max-w-[1180px] px-5 pb-8 sm:px-8">
+        <div className="glass-shell flex min-h-[calc(100vh-108px)] w-full overflow-hidden rounded-[30px]">
+          <SideRail />
+          <div className="min-w-0 flex-1 px-5 py-8 sm:px-10 sm:py-10">
+            {step === "import" && <UploadStep onCsv={analyze} loading={loading} error={error} />}
+            {step === "report" && report && (
+              <ReportStep report={report} onGenerate={() => setStep("generate")} onBack={() => setStep("import")} />
+            )}
+            {step === "generate" && report && (
+              <GenerateStep report={report} onDone={(d) => { setDrafts(d); setStep("publish"); }} onBack={() => setStep("report")} />
+            )}
+            {step === "publish" && <PublishStep drafts={drafts} onBack={() => setStep("generate")} />}
+          </div>
+        </div>
       </main>
     </div>
   );

@@ -3,27 +3,39 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
+
+const VIDEO_BACKGROUND =
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260806_133255_956f653f-5d80-4b06-abd5-0f46c98b60fa.mp4";
+
+export function PeakBackground() {
+  return (
+    <div className="peak-background" aria-hidden="true">
+      <video autoPlay muted loop playsInline preload="metadata">
+        <source src={VIDEO_BACKGROUND} type="video/mp4" />
+      </video>
+    </div>
+  );
+}
 
 export function Nav() {
   const pathname = usePathname();
   const onApp = pathname === "/app";
   return (
-    <header className="sticky top-0 z-20 border-b border-edge bg-bg/80 backdrop-blur">
-      <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2.5">
-          <Image
-            src="/logo.png"
-            alt="Peak"
-            width={26}
-            height={26}
-            className="rounded-md"
-          />
-          <span className="text-[15px] font-semibold tracking-tight">Peak</span>
-        </Link>
+    <header className="relative z-20 mx-auto flex h-[76px] w-full max-w-[1180px] items-center justify-between px-5 sm:px-8">
+      <Link href="/" className="flex items-center gap-3">
+        <span className="grid h-9 w-9 place-items-center overflow-hidden rounded-xl bg-[#11121b] shadow-sm">
+          <Image src="/logo.png" alt="Peak" width={22} height={22} />
+        </span>
+        <span className="text-[16px] font-semibold tracking-[-0.02em]">Peak</span>
+      </Link>
+      <div className="flex items-center gap-3">
+        <span className="hidden text-xs font-medium text-dim sm:inline">
+          Personal content intelligence
+        </span>
         <Link
           href={onApp ? "/" : "/app"}
-          className="rounded-lg border border-edge px-3 py-1.5 text-sm text-dim transition-colors hover:text-ink"
+          className="rounded-full bg-[#171827] px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-slate-900/10 transition hover:-translate-y-0.5 hover:bg-[#25263a]"
         >
           {onApp ? "Home" : "Open Peak"}
         </Link>
@@ -32,15 +44,39 @@ export function Nav() {
   );
 }
 
+export function SideRail() {
+  return (
+    <aside className="hidden w-[64px] shrink-0 flex-col items-center justify-between border-r border-white/65 py-5 md:flex">
+      <div className="flex flex-col items-center gap-3">
+        <Link href="/app" className="rail-button bg-[#171827] text-white shadow-lg shadow-slate-900/10" aria-label="New analysis">
+          <span className="text-xl font-light leading-none">+</span>
+        </Link>
+        <div className="h-px w-6 bg-slate-300/70" />
+        <button className="rail-button" data-active="true" aria-label="Analyze posts">
+          <span className="text-base">⌕</span>
+        </button>
+        <button className="rail-button" aria-label="Winning patterns">
+          <span className="text-sm">◈</span>
+        </button>
+        <button className="rail-button" aria-label="Draft queue">
+          <span className="text-sm">⊞</span>
+        </button>
+        <button className="rail-button" aria-label="History">
+          <span className="text-sm">↶</span>
+        </button>
+      </div>
+      <span className="grid h-8 w-8 place-items-center rounded-full bg-[#171827] text-[11px] font-bold text-white">P</span>
+    </aside>
+  );
+}
+
 export function Card({
   children,
   className = "",
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+  ...props
+}: HTMLAttributes<HTMLDivElement> & { children: ReactNode }) {
   return (
-    <div className={`rounded-xl border border-edge bg-panel ${className}`}>
+    <div {...props} className={`glass-card rounded-[22px] ${className}`}>
       {children}
     </div>
   );
@@ -56,15 +92,13 @@ export function Badge({
   children: ReactNode;
 }) {
   const tones: Record<BadgeTone, string> = {
-    hit: "bg-hit/10 text-hit border-hit/25",
-    miss: "bg-miss/10 text-miss border-miss/25",
-    peak: "bg-peak/10 text-peak border-peak/25",
-    default: "bg-white/5 text-dim border-edge",
+    hit: "bg-emerald-50/90 text-hit border-emerald-200/70",
+    miss: "bg-rose-50/90 text-miss border-rose-200/70",
+    peak: "bg-indigo-50/90 text-[#4e53d9] border-indigo-200/70",
+    default: "bg-white/65 text-dim border-white/80",
   };
   return (
-    <span
-      className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium ${tones[tone]}`}
-    >
+    <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold ${tones[tone]}`}>
       {children}
     </span>
   );
@@ -88,44 +122,29 @@ export function Button({
   type?: "button" | "submit";
 }) {
   const base =
-    "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40";
+    "inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-all disabled:cursor-not-allowed disabled:opacity-40";
   const variants: Record<ButtonVariant, string> = {
-    primary: "bg-peak text-black hover:bg-peak/90",
-    secondary: "border border-edge bg-panel2 text-ink hover:bg-panel",
-    ghost: "text-dim hover:text-ink",
-    danger: "bg-miss text-black hover:bg-miss/90",
+    primary: "bg-[#171827] text-white shadow-lg shadow-slate-900/10 hover:-translate-y-0.5 hover:bg-[#25263a]",
+    secondary: "border border-white/90 bg-white/72 text-[#27283a] shadow-sm hover:-translate-y-0.5 hover:bg-white",
+    ghost: "text-dim hover:bg-white/55 hover:text-ink",
+    danger: "bg-rose-600 text-white hover:bg-rose-700",
   };
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      className={`${base} ${variants[variant]} ${className}`}
-    >
+    <button type={type} onClick={onClick} disabled={disabled} className={`${base} ${variants[variant]} ${className}`}>
       {children}
     </button>
   );
 }
 
 export function Spinner() {
-  return (
-    <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-  );
+  return <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />;
 }
 
 export function SectionLabel({ children }: { children: ReactNode }) {
-  return (
-    <div className="text-xs font-semibold uppercase tracking-widest text-dim">
-      {children}
-    </div>
-  );
+  return <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-dim">{children}</div>;
 }
 
 export function ErrorNote({ message }: { message: string }) {
   if (!message) return null;
-  return (
-    <div className="rounded-lg border border-miss/25 bg-miss/10 px-3 py-2 text-sm text-miss">
-      {message}
-    </div>
-  );
+  return <div className="rounded-2xl border border-rose-200/75 bg-rose-50/85 px-4 py-3 text-sm text-miss shadow-sm">{message}</div>;
 }

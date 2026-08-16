@@ -1,79 +1,58 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Nav } from "@/components/ui";
+import { Nav, PeakBackground } from "@/components/ui";
 
 const STEPS = [
-  {
-    title: "Drop in your export",
-    body: "Export your post history from X analytics as CSV. It is free and takes a minute.",
-  },
-  {
-    title: "Read the report",
-    body: "See which posts hit, which died, and one plain reason for each. Then read the recipe pulled from your winners.",
-  },
-  {
-    title: "Post your next week",
-    body: "Drafts written from your winning pattern, ready to copy or send to Telegram.",
-  },
+  { number: "01", title: "Drop in your export", body: "Bring your post history from X analytics. It is free and takes a minute." },
+  { number: "02", title: "Find the pattern", body: "Peak separates the posts that moved from the ones that missed and explains the difference." },
+  { number: "03", title: "Post with intent", body: "Get a week of drafts shaped by your own winners, ready to copy or send." },
 ];
 
 export default function Home() {
   return (
-    <div className="flex min-h-full flex-1 flex-col">
+    <div className="relative flex min-h-screen flex-1 flex-col overflow-hidden text-ink">
+      <PeakBackground />
       <Nav />
-      <main className="mx-auto w-full max-w-5xl flex-1 px-6">
-        <section className="flex flex-col items-center py-20 text-center sm:py-28">
-          <Image
-            src="/logo.png"
-            alt="Peak"
-            width={64}
-            height={64}
-            className="rounded-xl"
-            priority
-          />
-          <h1 className="mt-8 max-w-2xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-            Find your peak. Post it again.
-          </h1>
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-dim">
-            Peak reads your post history, tells you why the weak ones died, and
-            writes your next week from the ones that worked.
-          </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/app?sample=1"
-              className="inline-flex items-center justify-center rounded-lg bg-peak px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-peak/90"
-            >
-              Load sample data
-            </Link>
-            <Link
-              href="/app"
-              className="inline-flex items-center justify-center rounded-lg border border-edge bg-panel2 px-6 py-3 text-sm font-medium text-ink transition-colors hover:bg-panel"
-            >
-              Drop in your export
-            </Link>
+      <main className="relative z-10 mx-auto flex w-full max-w-[1180px] flex-1 px-5 pb-14 sm:px-8">
+        <section className="glass-shell relative flex min-h-[calc(100vh-112px)] w-full flex-col items-center justify-center overflow-hidden rounded-[30px] px-6 py-16 text-center sm:px-12">
+          <div className="pointer-events-none absolute -right-24 top-0 h-72 w-72 rounded-full bg-indigo-200/25 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-white/65 blur-3xl" />
+          <div className="relative z-10 flex max-w-3xl flex-col items-center">
+            <div className="grid h-16 w-16 place-items-center overflow-hidden rounded-[20px] bg-[#11121b] shadow-xl shadow-slate-900/15">
+              <Image src="/logo.png" alt="Peak" width={38} height={38} priority />
+            </div>
+            <p className="mt-7 text-xs font-bold uppercase tracking-[0.24em] text-[#5a5ff0]">Personal content intelligence</p>
+            <h1 className="mt-5 max-w-2xl text-5xl font-semibold leading-[1.02] tracking-[-0.055em] sm:text-7xl">
+              Find your peak.<br />
+              <span className="text-[#5a5ff0]">Post it again.</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-base leading-7 text-dim sm:text-lg">
+              Peak reads your post history, tells you why the weak ones died, and writes your next week from the ones that worked.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link href="/app?sample=1" className="inline-flex items-center justify-center rounded-full bg-[#171827] px-6 py-3 text-sm font-semibold text-white shadow-xl shadow-slate-900/15 transition hover:-translate-y-0.5 hover:bg-[#25263a]">
+                Explore with sample data <span className="ml-2">↗</span>
+              </Link>
+              <Link href="/app" className="inline-flex items-center justify-center rounded-full border border-white/90 bg-white/70 px-6 py-3 text-sm font-semibold text-[#27283a] shadow-sm transition hover:-translate-y-0.5 hover:bg-white">
+                Use my export
+              </Link>
+            </div>
+          </div>
+
+          <div className="relative z-10 mt-16 grid w-full max-w-4xl grid-cols-1 gap-3 text-left sm:grid-cols-3">
+            {STEPS.map((step) => (
+              <div key={step.number} className="glass-card rounded-[20px] p-5">
+                <span className="text-xs font-bold text-[#5a5ff0]">{step.number}</span>
+                <h2 className="mt-3 text-sm font-semibold">{step.title}</h2>
+                <p className="mt-2 text-sm leading-6 text-dim">{step.body}</p>
+              </div>
+            ))}
           </div>
         </section>
-
-        <section className="grid grid-cols-1 gap-4 pb-24 sm:grid-cols-3">
-          {STEPS.map((s, i) => (
-            <div
-              key={s.title}
-              className="rounded-xl border border-edge bg-panel p-6"
-            >
-              <span className="text-sm font-semibold text-peak">
-                0{i + 1}
-              </span>
-              <h2 className="mt-3 text-base font-semibold">{s.title}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-dim">{s.body}</p>
-            </div>
-          ))}
-        </section>
       </main>
-      <footer className="border-t border-edge">
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-6 text-sm text-dim">
-          <span>Peak</span>
-          <span>Built by Sithu Nyein</span>
-        </div>
+      <footer className="relative z-10 mx-auto flex w-full max-w-[1180px] items-center justify-between px-8 pb-6 text-xs font-medium text-dim">
+        <span>Peak</span>
+        <span>Built by Sithu Nyein</span>
       </footer>
     </div>
   );
