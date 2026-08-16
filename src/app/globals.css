@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #09090b;
+  --panel: #131316;
+  --panel2: #1b1b1f;
+  --edge: #27272a;
+  --ink: #fafafa;
+  --dim: #a1a1aa;
+  --peak: #f59e0b;
+  --hit: #22c55e;
+  --miss: #ef4444;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-panel2: var(--panel2);
+  --color-edge: var(--edge);
+  --color-ink: var(--ink);
+  --color-dim: var(--dim);
+  --color-peak: var(--peak);
+  --color-hit: var(--hit);
+  --color-miss: var(--miss);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+::selection {
+  background: rgba(245, 158, 11, 0.3);
+}
