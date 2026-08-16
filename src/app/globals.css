@@ -92,23 +92,11 @@ body {
   -webkit-backdrop-filter: blur(14px);
 }
 
-.rail-button {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  color: #747b8d;
-  transition: 160ms ease;
-}
-
-.rail-button:hover,
-.rail-button[data-active="true"] {
-  color: #171827;
-  background: rgba(255, 255, 255, 0.84);
-  border-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 5px 16px rgba(90, 95, 160, 0.12);
+.logo-transparent {
+  /* The supplied mark is white on black. Invert it so the black field becomes
+     white and blends into the light app canvas, while the mark becomes dark. */
+  filter: invert(1);
+  mix-blend-mode: multiply;
 }
 
 @media (prefers-reduced-motion: reduce) {

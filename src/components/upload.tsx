@@ -46,8 +46,8 @@ export function UploadStep({
             Export your posts as CSV from X analytics. Peak reads the text and the numbers, then gives you a pattern you can actually use.
           </p>
         </div>
-        <span className="hidden h-12 w-12 place-items-center overflow-hidden rounded-2xl bg-[#11121b] shadow-md sm:grid">
-          <Image src="/logo.png" alt="Peak" width={28} height={28} />
+        <span className="hidden h-12 w-12 place-items-center sm:grid">
+          <Image src="/logo.png" alt="Peak" width={42} height={42} className="logo-transparent" />
         </span>
       </div>
 

@@ -44,32 +44,6 @@ export function Nav() {
   );
 }
 
-export function SideRail() {
-  return (
-    <aside className="hidden w-[64px] shrink-0 flex-col items-center justify-between border-r border-white/65 py-5 md:flex">
-      <div className="flex flex-col items-center gap-3">
-        <Link href="/app" className="rail-button bg-[#171827] text-white shadow-lg shadow-slate-900/10" aria-label="New analysis">
-          <span className="text-xl font-light leading-none">+</span>
-        </Link>
-        <div className="h-px w-6 bg-slate-300/70" />
-        <button className="rail-button" data-active="true" aria-label="Analyze posts">
-          <span className="text-base">⌕</span>
-        </button>
-        <button className="rail-button" aria-label="Winning patterns">
-          <span className="text-sm">◈</span>
-        </button>
-        <button className="rail-button" aria-label="Draft queue">
-          <span className="text-sm">⊞</span>
-        </button>
-        <button className="rail-button" aria-label="History">
-          <span className="text-sm">↶</span>
-        </button>
-      </div>
-      <span className="grid h-8 w-8 place-items-center rounded-full bg-[#171827] text-[11px] font-bold text-white">P</span>
-    </aside>
-  );
-}
-
 export function Card({
   children,
   className = "",
