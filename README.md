@@ -1,5 +1,7 @@
 <div align="center">
-  <img src="public/logo.png" alt="Peak logo" width="96" />
+  <p>
+    <img src="https://raw.githubusercontent.com/thesithunyein/peak/main/public/logo.png" alt="Peak logo" width="180" />
+  </p>
   <h1>Peak</h1>
   <p><strong>Find your peak. Post it again.</strong></p>
   <p>Peak turns a creator's post history into a clear performance diagnosis, a repeatable content recipe, and a week of drafts shaped by their own winners.</p>
@@ -37,61 +39,54 @@ Peak is intentionally not a social network manager or a replacement for a full p
 3. **Diagnose** hits and misses against the creator's own baseline. Misses receive plain-language explanations based on length, opening, hashtags, timing, and baseline performance.
 4. **Extract a recipe** from winning posts: opening patterns, length range, hashtag count, stronger days and hours, media usage, and voice samples.
 5. **Generate drafts** with Featherless using the extracted recipe and winning examples. Each draft includes a short reason and suggested publishing time.
-6. **Publish manually or to Telegram** by copying one post, copying the set, or sending a post to a configured Telegram chat.
+6. **Publish manually** by copying one draft or the complete set into the creator's preferred publishing tool.
 
 The analysis path is deterministic. If the model is unavailable, the report and recipe still work.
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    U[Creator] --> UI[Peak web app\nNext.js + React]
-    UI -->|CSV text| API[Next.js route handlers]
-    API --> PARSE[CSV parser\nX header aliases]
-    PARSE --> ENGINE[Deterministic analysis engine]
-    ENGINE --> REPORT[Report + misses + recipe]
-    REPORT --> UI
-    UI -->|Recipe + focus| GEN[/api/generate]
-    GEN --> FEATHER[Featherless\nOpenAI-compatible API]
-    FEATHER --> DRAFTS[Validated drafts\ntext + reason + time]
-    DRAFTS --> UI
-    UI --> CLIP[Clipboard]
-    UI --> PUB[/api/publish]
-    PUB --> TELEGRAM[Telegram Bot API]
+GitHub renders Mermaid diagrams when the syntax stays conservative. The diagram below intentionally uses simple node labels and quoted text rather than escaped line breaks or slash-heavy labels.
 
-    SAMPLE[(public/sample-export.csv)] --> UI
-    ENV[(Server environment\nAPI keys)] -.-> GEN
-    ENV -.-> PUB
+```mermaid
+flowchart TD
+  creator[Creator] --> web[Peak web app]
+  sample[Bundled sample CSV] --> web
+  web --> analyze[Analyze route]
+  analyze --> parser[CSV parser]
+  parser --> engine[Deterministic analysis]
+  engine --> report[Report and recipe]
+  report --> web
+  web --> generate[Generate route]
+  generate --> featherless[Featherless API]
+  featherless --> drafts[Validated drafts]
+  drafts --> web
+  web --> clipboard[Clipboard]
 ```
 
 ### Request boundaries
 
-- `/api/analyze` receives CSV text, parses it, and returns the computed report. It does not call Featherless or Telegram.
-- `/api/generate` receives the extracted recipe and calls Featherless using the server-side API key. The key is never sent to the browser.
-- `/api/publish` receives one text value and calls Telegram only when both Telegram variables are configured.
+- `POST /api/analyze` receives CSV text, parses it, and returns the computed report. It does not call Featherless.
+- `POST /api/generate` receives the extracted recipe and calls Featherless using the server-side API key. The key is never sent to the browser.
 - There is no database, account system, X OAuth flow, or background scheduler in this version.
 
 ## Product flow
 
 ```mermaid
 sequenceDiagram
-    participant C as Creator
-    participant P as Peak UI
-    participant A as Analysis route
-    participant F as Featherless
-    participant T as Telegram
+  participant C as Creator
+  participant P as Peak
+  participant A as Analyze route
+  participant F as Featherless
 
-    C->>P: Upload CSV or choose sample
-    P->>A: POST CSV text
-    A->>A: Parse, validate, score, classify, explain
-    A-->>P: Report and winner recipe
-    C->>P: Choose topic and draft count
-    P->>F: POST recipe and voice samples
-    F-->>P: JSON drafts
-    P->>P: Validate draft shape
-    C->>P: Copy draft or send
-    P->>T: POST message when configured
-    T-->>P: Publish result
+  C->>P: Upload CSV or choose sample
+  P->>A: Send CSV text
+  A->>A: Parse and score posts
+  A-->>P: Return report and recipe
+  C->>P: Choose topic and draft count
+  P->>F: Send recipe and winning examples
+  F-->>P: Return JSON drafts
+  P->>P: Validate draft shape
+  C->>P: Copy drafts to a publishing tool
 ```
 
 ## Live product
@@ -107,7 +102,6 @@ The fastest path is **Explore with sample data**. It runs the same CSV parser, a
 - Node.js 20 or newer recommended.
 - npm.
 - A Featherless API key for draft generation. Import and analysis work without it.
-- Optional Telegram bot credentials for Telegram publishing.
 
 ### Install and run
 
@@ -134,9 +128,7 @@ npm start
 | --- | --- | --- |
 | `FEATHERLESS_API_KEY` | Only for Generate | Server-side Featherless bearer token. |
 | `FEATHERLESS_MODEL` | No | Defaults to `Qwen/Qwen2.5-72B-Instruct`. |
-| `FEATHERLESS_BASE_URL` | No | Defaults to `https://api.featherless.ai/v1`. Useful for a compatible provider. |
-| `TELEGRAM_BOT_TOKEN` | Only for Telegram | Token from Telegram's BotFather. |
-| `TELEGRAM_CHAT_ID` | Only for Telegram | Target channel username or chat ID. The bot must have permission to post. |
+| `FEATHERLESS_BASE_URL` | No | Defaults to `https://api.featherless.ai/v1`. |
 
 Never commit `.env.local`. The repository ignores environment files and includes only the empty `.env.example` template.
 
@@ -146,7 +138,7 @@ Never commit `.env.local`. The repository ignores environment files and includes
 2. Confirm the CSV includes the post text, time, impressions, and engagements columns.
 3. Upload the file in Peak.
 4. Review the baseline, hits, misses, autopsies, and recipe.
-5. Generate drafts and copy them to your normal publishing tool, or optionally send them to Telegram.
+5. Generate drafts and copy them to your normal publishing tool.
 
 Peak accepts the standard X analytics aliases including `Tweet text`, `Time`, `Impressions`, `Engagements`, `Likes`, `Replies`, `Retweets`, `URL clicks`, `User profile clicks`, `Media views`, and `Video views`.
 
@@ -167,9 +159,9 @@ These are useful heuristics, not a claim of causal scientific attribution.
 
 ### Current protections
 
-- Featherless and Telegram secrets are read only on the server.
+- The Featherless secret is read only on the server.
 - `.env.local` and other environment files are ignored by Git.
-- The browser never receives the Featherless API key or Telegram bot token.
+- The browser never receives the Featherless API key.
 - The app has no database and does not persist uploaded CSVs as user records.
 - CSV parsing and analysis happen through the application's own API route. Draft generation receives the recipe and voice samples selected by the app.
 - Invalid CSV input is rejected with a clear `400` response.
@@ -195,13 +187,12 @@ Report security issues privately to the repository owner rather than opening a p
 peak/
 ├── public/
 │   ├── logo.png                 # Peak mark used by the web app and README
-│   └── sample-export.csv        # Bundled real-shaped CSV for the demo path
+│   └── sample-export.csv        # Bundled real-shaped CSV
 ├── src/
 │   ├── app/
 │   │   ├── api/
-│   │   │   ├── analyze/route.ts # CSV validation and deterministic report API
-│   │   │   ├── generate/route.ts# Featherless draft API
-│   │   │   └── publish/route.ts # Telegram publish API
+│   │   │   ├── analyze/route.ts # CSV validation and report API
+│   │   │   └── generate/route.ts# Featherless draft API
 │   │   ├── app/page.tsx          # Product flow state machine
 │   │   ├── globals.css           # Background video and visual system
 │   │   ├── layout.tsx            # Metadata, fonts, and root layout
@@ -209,21 +200,20 @@ peak/
 │   ├── components/
 │   │   ├── generate.tsx          # Draft count, topic, and generation UI
 │   │   ├── how-it-works.tsx      # Landing-page FAQ dialog
-│   │   ├── publish.tsx           # Copy and Telegram publishing UI
-│   │   ├── report.tsx            # Diagnosis and recipe UI
-│   │   ├── ui.tsx                # Navigation, background, cards, controls
-│   │   └── upload.tsx            # CSV dropzone and sample download
+│   │   ├── publish.tsx           # Copy drafts UI
+│   │   ├── report.tsx             # Diagnosis and recipe UI
+│   │   ├── ui.tsx                 # Navigation, background, cards, controls
+│   │   └── upload.tsx             # CSV dropzone and sample download
 │   └── lib/
-│       ├── autopsy.ts            # Plain-language miss explanations
-│       ├── csv.ts                # RFC4180 parser and X aliases
-│       ├── llm.ts                # Featherless request and JSON validation
-│       ├── metrics.ts            # Rates, percentiles, time helpers
-│       ├── postmortem.ts         # Report orchestration and classification
-│       ├── recipe.ts              # Winner pattern extraction
-│       ├── telegram.ts            # Telegram API client
-│       └── types.ts               # Shared domain types
+│       ├── autopsy.ts             # Plain-language miss explanations
+│       ├── csv.ts                 # RFC4180 parser and X aliases
+│       ├── llm.ts                 # Featherless request and JSON validation
+│       ├── metrics.ts             # Rates, percentiles, time helpers
+│       ├── postmortem.ts          # Report orchestration and classification
+│       ├── recipe.ts               # Winner pattern extraction
+│       └── types.ts                # Shared domain types
 ├── tests/
-│   └── engine.test.ts            # Core parser and analysis tests
+│   └── engine.test.ts             # Core parser and analysis tests
 ├── .env.example
 ├── eslint.config.mjs
 ├── LICENSE
@@ -263,5 +253,4 @@ Peak is released under the [MIT License](LICENSE).
 - [Next.js](https://nextjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Featherless](https://featherless.ai/)
-- [Telegram Bot API](https://core.telegram.org/bots/api)
 - [Vitest](https://vitest.dev/)

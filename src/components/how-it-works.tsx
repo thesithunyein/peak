@@ -22,7 +22,7 @@ const FAQS = [
   },
   {
     question: "Do I need an X API key?",
-    answer: "No. The free CSV flow does not need an X developer account or payment. You can copy drafts, or optionally send them through Telegram if Telegram credentials are configured.",
+    answer: "No. The free CSV flow does not need an X developer account, payment, or any social API credentials. Copy the finished drafts into the publishing tool you already use.",
   },
 ];
 
