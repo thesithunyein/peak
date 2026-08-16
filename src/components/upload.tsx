@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useRef, useState } from "react";
 import { Button, Card, ErrorNote, Spinner } from "./ui";
+import { HowItWorks } from "./how-it-works";
 
 export function UploadStep({
   onCsv,
@@ -46,9 +46,6 @@ export function UploadStep({
             Export your posts as CSV from X analytics. Peak reads the text and the numbers, then gives you a pattern you can actually use.
           </p>
         </div>
-        <span className="hidden h-12 w-12 place-items-center overflow-hidden rounded-2xl bg-[#11121b] shadow-md sm:grid">
-          <Image src="/logo.png" alt="Peak" width={42} height={42} className="logo-mark" />
-        </span>
       </div>
 
       <Card
@@ -75,8 +72,16 @@ export function UploadStep({
           {sampleLoading ? <Spinner /> : null}
           Explore sample data
         </Button>
-        <span className="text-xs text-dim">No API key needed for import</span>
+        <a
+          href="/sample-export.csv"
+          download="peak-sample-export.csv"
+          className="text-sm font-semibold text-[#4e53d9] underline decoration-indigo-200 underline-offset-4 transition hover:text-[#171827]"
+        >
+          Download sample CSV
+        </a>
       </div>
+      <p className="mt-3 text-center text-xs text-dim">No API key needed for import</p>
+      <div className="mt-5 flex justify-center"><HowItWorks /></div>
       <div className="mt-5"><ErrorNote message={error ?? ""} /></div>
     </div>
   );

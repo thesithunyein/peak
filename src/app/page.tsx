@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Nav, PeakBackground } from "@/components/ui";
 
@@ -18,10 +17,7 @@ export default function Home() {
           <div className="pointer-events-none absolute -right-24 top-0 h-72 w-72 rounded-full bg-indigo-200/25 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-white/65 blur-3xl" />
           <div className="relative z-10 flex max-w-3xl flex-col items-center">
-            <div className="grid h-16 w-16 place-items-center overflow-hidden rounded-[20px] bg-[#11121b] shadow-xl shadow-slate-900/15">
-              <Image src="/logo.png" alt="Peak" width={54} height={54} className="logo-mark" priority />
-            </div>
-            <p className="mt-7 text-xs font-bold uppercase tracking-[0.24em] text-[#5a5ff0]">Personal content intelligence</p>
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#5a5ff0]">Personal content intelligence</p>
             <h1 className="mt-5 max-w-2xl text-5xl font-semibold leading-[1.02] tracking-[-0.055em] sm:text-7xl">
               Find your peak.<br />
               <span className="text-[#5a5ff0]">Post it again.</span>
@@ -50,9 +46,8 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <footer className="relative z-10 mx-auto flex w-full max-w-[1180px] items-center justify-between px-8 pb-6 text-xs font-medium text-dim">
-        <span>Peak</span>
-        <span>Built by Sithu Nyein</span>
+      <footer className="relative z-10 mx-auto flex w-full max-w-[1180px] items-center justify-center px-8 pb-6 text-xs font-medium text-dim">
+        <span>Made by Peak</span>
       </footer>
     </div>
   );
