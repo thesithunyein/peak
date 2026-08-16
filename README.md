@@ -39,7 +39,7 @@ Peak is intentionally not a social network manager or a replacement for a full p
 3. **Diagnose** hits and misses against the creator's own baseline. Misses receive plain-language explanations based on length, opening, hashtags, timing, and baseline performance.
 4. **Extract a recipe** from winning posts: opening patterns, length range, hashtag count, stronger days and hours, media usage, and voice samples.
 5. **Generate drafts** with Featherless using the extracted recipe and winning examples. Each draft includes a short reason and suggested publishing time.
-6. **Publish manually** by copying one draft or the complete set into the creator's preferred publishing tool.
+6. **Publish manually** by editing drafts, copying one draft or the complete set, or downloading the set as TXT or CSV for the creator's preferred publishing tool.
 
 The analysis path is deterministic. If the model is unavailable, the report and recipe still work.
 
@@ -86,7 +86,7 @@ sequenceDiagram
   P->>F: Send recipe and winning examples
   F-->>P: Return JSON drafts
   P->>P: Validate draft shape
-  C->>P: Copy drafts to a publishing tool
+  C->>P: Edit, copy, or download drafts
 ```
 
 ## Live product
@@ -200,7 +200,7 @@ peak/
 │   ├── components/
 │   │   ├── generate.tsx          # Draft count, topic, and generation UI
 │   │   ├── how-it-works.tsx      # Landing-page FAQ dialog
-│   │   ├── publish.tsx           # Copy drafts UI
+│   │   ├── publish.tsx           # Edit, copy, and download drafts UI
 │   │   ├── report.tsx             # Diagnosis and recipe UI
 │   │   ├── ui.tsx                 # Navigation, background, cards, controls
 │   │   └── upload.tsx             # CSV dropzone and sample download
@@ -241,8 +241,16 @@ The current repository and live deployment were checked end to end:
 - Live homepage and app route return HTTP 200.
 - Bundled sample CSV returns 24 parsed posts, 24 valid posts, 6 hits, and 6 misses.
 - The live Featherless route returns a real draft with text and a reason.
+- The draft screen supports editing, clipboard copy, TXT download, and CSV download.
 - Invalid CSV returns HTTP 400 with missing-column feedback.
 - TypeScript, ESLint, Vitest, and the production build pass locally.
+
+## Author
+
+Peak is built by **Sithu Nyein**.
+
+- Email: [sithunyein.mailto@gmail.com](mailto:sithunyein.mailto@gmail.com)
+- GitHub: [@thesithunyein](https://github.com/thesithunyein)
 
 ## License
 
