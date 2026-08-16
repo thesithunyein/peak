@@ -92,11 +92,10 @@ body {
   -webkit-backdrop-filter: blur(14px);
 }
 
-.logo-transparent {
-  /* The supplied mark is white on black. Invert it so the black field becomes
-     white and blends into the light app canvas, while the mark becomes dark. */
-  filter: invert(1);
-  mix-blend-mode: multiply;
+.logo-mark {
+  /* The source PNG is white on black. Screen blending makes its black pixels
+     merge into the black badge while preserving the white mark. */
+  mix-blend-mode: screen;
 }
 
 @media (prefers-reduced-motion: reduce) {
