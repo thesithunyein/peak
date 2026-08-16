@@ -41,7 +41,7 @@ export function HowItWorks() {
 
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/25 px-5 py-8 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#11121b]/60 px-5 py-8 backdrop-blur-md"
           role="presentation"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) setOpen(false);
@@ -51,7 +51,7 @@ export function HowItWorks() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="how-it-works-title"
-            className="glass-shell max-h-[min(720px,90vh)] w-full max-w-2xl overflow-auto rounded-[28px] p-6 text-left shadow-2xl sm:p-8"
+            className="relative z-10 max-h-[min(720px,90vh)] w-full max-w-2xl overflow-auto rounded-[28px] border border-white bg-[#f8f9ff] p-6 text-left text-[#171827] shadow-2xl sm:p-8"
           >
             <div className="flex items-start justify-between gap-5">
               <div>
@@ -59,10 +59,10 @@ export function HowItWorks() {
                 <h2 id="how-it-works-title" className="mt-2 text-3xl font-semibold tracking-[-0.04em]">How it works</h2>
                 <p className="mt-2 text-sm leading-6 text-dim">A short guide from upload to your next week of posts.</p>
               </div>
-              <button type="button" onClick={() => setOpen(false)} aria-label="Close help" className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/70 text-xl text-dim transition hover:bg-white hover:text-ink">×</button>
+              <button type="button" onClick={() => setOpen(false)} aria-label="Close help" className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[#e4e7f0] bg-white text-xl text-[#697083] transition hover:bg-[#eef0ff] hover:text-[#171827]">×</button>
             </div>
 
-            <div className="mt-7 divide-y divide-white/80 rounded-2xl border border-white/80 bg-white/45 px-4">
+            <div className="mt-7 divide-y divide-[#e4e7f0] rounded-2xl border border-[#e4e7f0] bg-white px-4">
               {FAQS.map((faq, index) => {
                 const isExpanded = expanded === index;
                 return (
@@ -71,12 +71,12 @@ export function HowItWorks() {
                       type="button"
                       onClick={() => setExpanded(isExpanded ? null : index)}
                       aria-expanded={isExpanded}
-                      className="flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-semibold"
+                      className="flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-semibold text-[#171827]"
                     >
                       {faq.question}
                       <span className="text-xl font-normal text-[#5a5ff0]">{isExpanded ? "−" : "+"}</span>
                     </button>
-                    {isExpanded && <p className="-mt-1 pb-4 pr-8 text-sm leading-6 text-dim">{faq.answer}</p>}
+                    {isExpanded && <p className="-mt-1 pb-4 pr-8 text-sm leading-6 text-[#58627a]">{faq.answer}</p>}
                   </div>
                 );
               })}
