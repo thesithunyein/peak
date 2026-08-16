@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Nav, PeakBackground } from "@/components/ui";
+import { HowItWorks } from "@/components/how-it-works";
 
 const STEPS = [
   { number: "01", title: "Drop in your export", body: "Bring your post history from X analytics. It is free and takes a minute." },
@@ -33,6 +34,7 @@ export default function Home() {
                 Use my export
               </Link>
             </div>
+            <div className="mt-4"><HowItWorks /></div>
           </div>
 
           <div className="relative z-10 mt-16 grid w-full max-w-4xl grid-cols-1 gap-3 text-left sm:grid-cols-3">

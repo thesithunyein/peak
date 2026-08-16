@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import { Button, Card, ErrorNote, Spinner } from "./ui";
-import { HowItWorks } from "./how-it-works";
 
 export function UploadStep({
   onCsv,
@@ -81,7 +80,6 @@ export function UploadStep({
         </a>
       </div>
       <p className="mt-3 text-center text-xs text-dim">No API key needed for import</p>
-      <div className="mt-5 flex justify-center"><HowItWorks /></div>
       <div className="mt-5"><ErrorNote message={error ?? ""} /></div>
     </div>
   );
