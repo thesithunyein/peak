@@ -25,7 +25,7 @@ export function Nav() {
     <header className="relative z-20 mx-auto flex h-[76px] w-full max-w-[1180px] items-center justify-between px-5 sm:px-8">
       <Link href="/" className="flex items-center gap-3">
         <span className="grid h-10 w-10 place-items-center overflow-hidden rounded-[14px] bg-[#11121b] shadow-sm">
-          <Image src="/logo.png" alt="Peak" width={28} height={28} className="logo-mark" />
+          <Image src="/logo.png" alt="Peak" width={28} height={28} className="logo-mark scale-[1.35]" />
         </span>
         <span className="text-[16px] font-semibold tracking-[-0.02em]">Peak</span>
       </Link>

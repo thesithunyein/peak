@@ -37,7 +37,8 @@ export function HowItWorks() {
 
   const dialog = open ? (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#11121b]/70 px-5 py-8 backdrop-blur-md"
+      className="fixed inset-0 flex items-center justify-center bg-[#11121b]/70 px-5 py-8 backdrop-blur-md"
+      style={{ zIndex: 2147483647, isolation: "isolate" }}
       role="presentation"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) setOpen(false);
@@ -47,7 +48,8 @@ export function HowItWorks() {
         role="dialog"
         aria-modal="true"
         aria-labelledby="how-it-works-title"
-        className="relative z-[101] max-h-[min(720px,90vh)] w-full max-w-2xl overflow-auto rounded-[28px] border border-white bg-[#f8f9ff] p-6 text-left text-[#171827] shadow-2xl sm:p-8"
+        className="relative max-h-[min(720px,90vh)] w-full max-w-2xl overflow-auto rounded-[28px] border border-white p-6 text-left text-[#171827] shadow-2xl sm:p-8"
+        style={{ zIndex: 1, backgroundColor: "#f8f9ff", opacity: 1 }}
       >
         <div className="flex items-start justify-between gap-5">
           <div>
